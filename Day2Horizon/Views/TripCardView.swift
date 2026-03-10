@@ -10,8 +10,9 @@ struct TripCardView: View {
             TripDetailView(trip: $trip)
         } label: {
             ZStack(alignment: .bottomLeading) {
-                if UIImage(named: trip.photoName) != nil {
-                    Image(trip.photoName)
+                if let data = trip.photoData,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
@@ -60,7 +61,7 @@ struct PreviewContainer: View {
     
     @State var trip = Trip(
         name: "Cali Coastal Trails",
-        photoName: "Cali",
+        photoData: nil,
         scheduledDate: .now,
         activities: [
             Activity(name: "Bumpy ride across the ridges", isComplete: false),

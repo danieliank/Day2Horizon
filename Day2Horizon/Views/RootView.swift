@@ -9,8 +9,20 @@ struct RootView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach($trips) { $trip in
-                        TripCardView(trip: $trip)
+                    ForEach(Array(trips.enumerated()), id: \.element.id) { index, trip in
+                        TripCardView(trip: $trips[index])
+                            .overlay(alignment: .topTrailing) {
+                                Button {
+                                    deleteTrip(at: index)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                        .padding(8)
+                                }
+                                .foregroundStyle(.white)
+                                .background(.red)
+                                .clipShape(Circle())
+                                .padding(8)
+                            }
                     }
                 }
                 .padding()
@@ -27,7 +39,11 @@ struct RootView: View {
                 AddTripView(trips: $trips)
             }
         }
-        
+    }
+    
+    
+    func deleteTrip(at index: Int) {
+        trips.remove(at: index)
     }
 }
 
@@ -36,7 +52,7 @@ struct RootView: View {
         trips: [
             Trip(
                 name: "Cali Coastal Trails",
-                photoName: "Cali",
+                photoData: nil,
                 scheduledDate: .now,
                 activities: [
                     Activity(name: "Bumpy ride across the ridges", isComplete: false),

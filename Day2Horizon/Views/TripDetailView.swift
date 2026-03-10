@@ -7,8 +7,9 @@ struct TripDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                if UIImage(named: trip.photoName) != nil {
-                    Image(trip.photoName)
+                if let data = trip.photoData,
+                   let uiImage = UIImage(data: data) {
+                    Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFill()
                         .frame(height: 220)
